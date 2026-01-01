@@ -31,7 +31,6 @@ export default async function GamePage({
             alt="bg-blur"
           />
 
-          {/* Actual Image - Set to Contain so it's never cut off */}
           <img
             src={game.thumbnail}
             alt={game.title}
@@ -78,7 +77,6 @@ export default async function GamePage({
                 top-tier {game.genre} gameplay with stunning visuals.
               </p>
 
-              {/* Stats Bar */}
               <div className="flex gap-8 py-8 border-y border-white/5">
                 <div>
                   <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">
