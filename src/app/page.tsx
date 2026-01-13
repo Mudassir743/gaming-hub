@@ -1,43 +1,27 @@
 "use client";
-
+import { genreImages } from "../app/games/game_gen_img";
 import { games } from "../app/games/data";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function AllGamesPage() {
-  const genreImages: Record<string, string> = {
-    Action: "https://wallpapercave.com/wp/wp14777943.jpg",
-    Racing:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJBI8VX5aDGsm0aZrtaVDzWbLDprKtTb8giw&s",
-    Shooter:
-      "https://play-lh.googleusercontent.com/BkB2UFUn4EWqNNIWKezeQjl32_d7wRICCKGFxFYIhXlNy0WKYONKR0pbxXvSr1wZAvo",
-    Strategy:
-      "https://www.shutterstock.com/image-vector/logo-strategy-games-neon-icon-600w-1403966939.jpg",
-    Sports:
-      "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg?semt=ais_hybrid&w=740&q=80",
-    Puzzle: "",
-    MMORPG:
-      "https://cdn.dribbble.com/userupload/38879335/file/original-692114fd4c44ded9bc90e88f79eca5fa.jpg?resize=400x0",
-
-    ARPG: "https://cdn.aptoide.com/imgs/3/7/9/37922a0fe9f245b66867cb489ef2157c_fgraphic.png",
-
-    MMOARPG:
-      "https://cdn.dribbble.com/userupload/38879335/file/original-692114fd4c44ded9bc90e88f79eca5fa.jpg?resize=400x0",
-    Fighting:
-      "https://c4.wallpaperflare.com/wallpaper/798/97/312/tekken-7-wallpaper-preview.jpg",
-
-    MOBA: "https://c4.wallpaperflare.com/wallpaper/110/414/496/4k-battle-black-beacon-games-wallpaper-preview.jpg",
-
-    RPG: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNwtgJcyOfxlonD6divlr5T2XmmW9UMmc-VQ&s",
-    MMO: "https://img.freepik.com/free-photo/fantasy-group-adventurers_23-2151470646.jpg?semt=ais_hybrid&w=740&q=80",
-    Social: "https://images4.alphacoders.com/139/thumb-350-1396376.webp",
-    Fantasy:
-      "https://c4.wallpaperflare.com/wallpaper/951/583/798/fantasy-art-warrior-dark-souls-iii-dark-souls-wallpaper-preview.jpg",
-  };
-
   const [searchTerm, setSearchTerm] = useState("");
   const genres = Array.from(new Set(games.map((game) => game.genre)));
   const [selectedGenre, setSelectedGenre] = useState<string>("All");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string>("");
+
+  const platforms = [
+    {
+      id: "pc",
+      name: "PC",
+    },
+    {
+      id: "web browser",
+      name: "Web Game",
+    },
+  ];
+
   const filteredGames = games.filter((game) => {
     const matchGenre = selectedGenre === "All" || game.genre === selectedGenre;
 
@@ -45,113 +29,215 @@ export default function AllGamesPage() {
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
 
-    return matchGenre && matchSearch;
+    const matchPlatform =
+      selectedPlatforms === "" ||
+      selectedPlatforms === "all" ||
+      game.platform.toLowerCase().includes(selectedPlatforms);
+
+    return matchGenre && matchSearch && matchPlatform;
+  });
+
+  const [sortedRelevance, setSortedRelevance] = useState("id");
+
+  const sortedGames = [...filteredGames].sort((a, b) => {
+    if (sortedRelevance === "id") {
+      return a.id - b.id;
+    }
+
+    if (sortedRelevance === "name") {
+      return a.title.localeCompare(b.title); // name sort
+    }
+    return 0;
   });
 
   return (
-    <div className="max-w-full flex flex-row mb-12 h-screen lg-grid-cols-4 overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] bg-linear-to-br from-[#120c1d] via-[#07173d] to-[#110e32] text-slate-100 accent-cyan-400 p-2 shadow-[inset_0_200+_140px_rgba(99,102,241,0.12)]">
-      <aside className="w-72 overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ">
-        <div className="  grid grid-cols-1 gap-6  overflow-y-auto min-h-screen mt-5 bg-transparent  ">
-          <p className=" font-extrabold text-4xl flex pl-3  bg-clip-text text-transparent bg-linear-to-r from-indigo-600 to-purple-500  ">
-            {" "}
-            All Genres
-          </p>
-          <a
-            className={` flex flex-row  font-bold text-lg cursor-pointer items-center  px-4 gap-2 w-45 ${
-              selectedGenre === "All"
-            }`}
-            onClick={() => setSelectedGenre("All")}
+    <div className="max-w-full flex flex-row mb-12 h-screen overflow-hidden bg-linear-to-br from-[#120c1d] via-[#07173d] to-[#110e32] text-slate-100">
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="fixed top-1/3 left-0 -translate-y-1/2 z-50 lg:hidden bg-linear-to-b from-indigo-500 to-purple-600 text-white px-0 py-7 rounded-r-2xl shadow-[5px_0_20px_rgba(99,102,241,0.4)] border-y border-r border-white/20 transition-all duration-300 hover:px-2 hover:shadow-[5px_0_25px_rgba(168,85,247,0.5)] active:scale-90"
+      >
+        {sidebarOpen ? "❮" : "❯"}
+      </button>
+
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+        />
+      )}
+
+      <aside
+        className={`fixed top-0 left-0 h-screen w-56 bg-[#0b0f2a] border-r border-white/5 
+          transform transition-transform duration-300 
+          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
+          lg:static lg:translate-x-0 z-40 overflow-y-auto 
+          [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]`}
+      >
+        <p className="font-extrabold text-3xl p-6 bg-clip-text text-transparent bg-linear-to-r from-blue-600 via-purple-600 to-purple-500">
+          Genres
+        </p>
+        <div className="grid grid-cols-1 gap-5 px-4">
+          <button
+            className="flex flex-row font-bold text-gray-400 text-md cursor-pointer items-center gap-2 group"
+            onClick={() => {
+              setSelectedGenre("All");
+              setSidebarOpen(false);
+            }}
           >
             <img
-              className=" w-10 h-10 rounded-md  "
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL1epibC-N5OCsK78317n2ngiO_8mMXtp7-8dkz8-daw&s"
-              alt="image "
-            />{" "}
+              className="w-10 h-10 rounded-md transition-transform group-hover:scale-110"
+              src="https://media.craiyon.com/2025-04-08/-oTYTlfWQqiyASOnYVxH4g.webp"
+              alt="all"
+            />
             <span>All Games</span>
-          </a>
-          <div className=" flex flex-col  w-full  text-left cursor-pointer">
-            {genres.map((genre) => (
-              <div className="  flex felx-roe ">
-                <a
-                  key={genre}
-                  className={` px-5 py-2 text-sm flex  flex-row items-center gap-2 ${
-                    selectedGenre === genre
-                  }`}
-                  onClick={() => setSelectedGenre(genre)}
-                >
-                  <img
-                    src={
-                      genreImages[genre] ||
-                      "https://c4.wallpaperflare.com/wallpaper/800/864/33/pc-game-ps4-hellblade-wallpaper-preview.jpg"
-                    }
-                    alt={genre}
-                    className="w-10 h-10 rounded-md object-cover "
-                    loading="lazy"
-                  />
-                  {genre}
-                </a>
-              </div>
-            ))}
-          </div>
+          </button>
+          {genres.map((genre) => (
+            <a
+              key={genre}
+              className="flex flex-row items-center gap-2 cursor-pointer group"
+              onClick={() => {
+                setSelectedGenre(genre);
+                setSidebarOpen(false);
+              }}
+            >
+              <img
+                src={
+                  genreImages[genre] ||
+                  "https://img.freepik.com/free-photo/world-collapse-doomsday-scene-digital-painting_456031-63.jpg?semt=ais_hybrid&w=740&q=80"
+                }
+                alt={genre}
+                className="w-10 h-10 rounded-md "
+              />
+              <span className="group-hover:text-indigo-300 text-gray-400 text-sm transition-colors">
+                {genre}
+              </span>
+            </a>
+          ))}
         </div>
       </aside>
-      <div className="max-w-full flex flex-col mb-12 h-screen lg-grid-cols-4 overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]  ">
-        <div className=" flex items-center gap-14 justify-between ">
-          <h1 className=" pl-10 text-5xl font-extrabold mb-10 mt-5 bg-clip-text text-transparent bg-linear-to-r from-indigo-600 to-purple-500 ">
-            Discovery Library
-          </h1>
-          <div className=" w-120 pr-20">
-            <input
-              type="text"
-              placeholder="Search games..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full h-10 rounded-full bg-white/5 text-gray-300 placeholder-slate-400 px-5 py-5 pl-5 backdrop-blur-md focus:outline-none border border-gray-600 hover:border-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 transition-all duration-300"
-            />
-          </div>
-        </div>
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 min-h-screen">
-          {filteredGames.map((game) => (
-            <Link key={game.id} href={`/games/${game.id}`} className="group">
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col h-screen overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-3 lg:p-3 mt-5">
+        {/* HEADER SECTION */}
+        <div className="flex flex-col gap-7 mb-8">
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-3 ">
               <div
                 className="
-relative
-rounded-xl
-overflow-hidden
-bg-white/7 backdrop-blur-xl
-transition-all duration-300 ease-out
-hover:-translate-y-1
-border border-white/20 hover:border-blue-500
-shadow-lg
-ring-1 ring-white/10 hover:ring-2 hover:ring-blue-900/60
-hover:shadow-[0_0_25px_rgba(59,130,246,0.6)]
+  w-14 md:w-14
+  aspect-square
+  rounded-3xl
+  bg-linear-to-br from-indigo-500 to-purple-600
+  flex items-center justify-center
+  shadow-[0_0_20px_rgba(99,102,241,0.4)]
 "
               >
-                <div className="relative h-full w-full overflow-hidden">
+                <img
+                  src="https://media.craiyon.com/2025-04-08/-oTYTlfWQqiyASOnYVxH4g.webp"
+                  alt=""
+                  className=" rounded-full "
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <h1 className="text-2xl md:text-[45px] font-extrabold bg-clip-text text-transparent bg-linear-to-r from-blue-600 via-purple-600 to-purple-500 leading-tight">
+                  Discovery Library
+                </h1>
+                <p className="text-slate-400 text-sm font-medium tracking-wide">
+                  Find your next adventure
+                </p>
+              </div>
+            </div>
+            <div className="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 px-5 py-2 rounded-full backdrop-blur-md">
+              <span className="text-purple-400 font-bold text-xl">
+                {filteredGames.length}
+              </span>
+              <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">
+                games
+              </span>
+            </div>
+          </div>
+        </div>
+        {/* Search Bar and select optoins */}
+        <div className="flex flex-col sm:flex-row gap-5 sm:gap-8 mb-10 sticky top-0 z-50 bg-transparent ">
+          <div className="left-5 w-full flex items-center backdrop-blur-md  ">
+            <input
+              type="text"
+              placeholder="Search for games..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full h-10 rounded-full text-sm text-gray-300 placeholder-slate-400 px-5 py-2  backdrop-blur-md focus:outline-none border-2 border-gray-600 hover:border-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 transition-all duration-300"
+            />
+          </div>
+
+          <div className="  flex felx-row  gap-3 sm:gap-3">
+            <select
+              className="w-50 h-10 rounded-full text-sm text-gray-400 placeholder-slate-400 px-3 py-2 backdrop-blur-md focus:outline-none border-2 border-gray-600 hover:border-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 transition-all duration-300"
+              value={sortedRelevance}
+              onChange={(e) => setSortedRelevance(e.target.value)}
+            >
+              <option className=" bg-black text-white " value="all">
+                Sorted Games
+              </option>
+              <option className="bg-black text-white" value="id">
+                ID
+              </option>
+              <option className="bg-black text-white " value="name">
+                Name
+              </option>
+            </select>
+
+            <select
+              className="w-50 h-10 rounded-full text-sm text-gray-400 placeholder-slate-400 px-3 py-2  bg-transparent backdrop-blur-md focus:outline-none border-2 border-gray-600 hover:border-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 transition-all duration-300"
+              onChange={(e) => {
+                setSelectedPlatforms(e.target.value);
+              }}
+            >
+              {" "}
+              <option className="bg-black text-white" value="all">
+                All Platforms
+              </option>
+              {platforms.map((item) => {
+                return (
+                  <option className="bg-black text-white" value={item.id}>
+                    {item.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+        </div>
+        {/*CARDS GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          {sortedGames.map((game) => (
+            <Link key={game.id} href={`/games/${game.id}`}>
+              <div className="group relative rounded-2xl overflow-hidden bg-transparent backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-2 border-2 border-white/20 hover:border-blue-500 shadow-lg ring-1 ring-white/10 hover:ring-2 hover:ring-blue-900/60 hover:shadow-[0_0_25px_rgba(59,130,246,0.6)]">
+                <div className="relative aspect-video w-full overflow-hidden border-b border-white/5">
                   <img
                     src={game.thumbnail}
-                    alt={game.game_url}
-                    className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+                    alt={game.title}
+                    className="w-full h-full object-cover transition-transform duration-400 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-[#222832] via-transparent to-transparent opacity-10" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
-
-                <div className="p-2 relative">
-                  <h2 className="text-10  font-bold mb-1 group-hover:text-blue-400 transition-colors duration-300 line-clamp-1">
-                    {game.title}
-                  </h2>
-
+                <div className="p-3 relative  ">
+                  <div className="flex justify-between">
+                    <h2 className="text-base font-bold mb-1 group-hover:text-blue-400 transition-colors duration-300 line-clamp-1">
+                      {game.title}
+                    </h2>
+                    <span className=" mt-1.5 text-[13px] tracking-wider text-gray-400 group-hover:text-white transition-colors duration-300 ">
+                      {game.id}
+                    </span>
+                  </div>
                   <div className="flex items-center justify-between">
-                    <span className=" font- text-sm tracking-wider  text-gray-400 group-hover:text-white transition-colors duration-300 ">
+                    <span className="text-xs tracking-wider text-gray-400 group-hover:text-white transition-colors duration-300 ">
                       {game.genre}
                     </span>
-
                     <div className="transform translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5 text-blue-400"
-                        viewBox=""
+                        viewBox="0 0 20 20"
                         fill="currentColor"
                       >
                         <path

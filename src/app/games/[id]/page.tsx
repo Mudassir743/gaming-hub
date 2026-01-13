@@ -13,113 +13,119 @@ export default async function GamePage({
   if (!game) notFound();
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-[#120c1d] via-[#07173d] to-[#110e32] text-slate-100 flex items-center justify-center p-4 md:p-8">
-      {/* Background Ambient Glows */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden ">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-indigo-600/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-purple-600/10 blur-[120px] rounded-full" />
-      </div>
+    <div className="relative min-h-screen w-full flex flex-col items-center justify-center p-4 overflow-hidden bg-black text-white">
+      <div
+        className="fixed inset-0 w-full h-full z-0 pointer-events-none"
+        style={{
+          backgroundImage: `url(${game.thumbnail})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(8px) brightness(0.3)",
+          transform: "scale(1.1)",
+        }}
+      />
 
-      {/* Main Glass Card */}
-      <div className="relative z-10 w-full max-w-6xl  bg-white/3 backdrop-blur-2xl border border-white/10 rounded-4xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-150">
-        {/* LEFT: Image Section with Smart Fit */}
-        <div className="w-full md:w-1/2 relative bg-black/40  flex items-center justify-center overflow-hidden border-r border-white/5">
-          {/* Background Blur for the Image area */}
-          <img
-            src={game.thumbnail}
-            className="absolute inset-0 w-full h-full object-cover opacity-30 blur-2xl scale-125 "
-            alt="bg-blur"
-          />
-
+      {/* 3. MAIN GLASS CARD CONTAINER */}
+      <div className="relative z-5 w-full max-w-6xl bg-black/40 backdrop-blur-3xl flex border border-gray-700 rounded-[3rem] p-6 md:p-10 flex-col md:flex-row items-center gap-5 shadow-2xl">
+        <div className="w-full md:w-1/2 rounded-3xl overflow-hidden shadow-2xl border border-white/5">
           <img
             src={game.thumbnail}
             alt={game.title}
-            className="relative z-10 w-full h-full object-contain md:p-4  drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]"
+            className="w-full h-auto object-cover "
           />
         </div>
-
-        {/* RIGHT: Details Section */}
-        <div className="w-full md:w-1/2 p-8 md:p-14 flex flex-col justify-center">
-          <div className="mb-auto">
+        <div className="w-full md:w-1/2 flex flex-col space-y-5">
+          <div className="flex justify-end">
             <Link
               href="/"
-              className="inline-flex items-center text-xs font-bold tracking-widest text-slate-500 hover:text-indigo-400 mb-10 transition-all group uppercase"
+              className="bg-white/10 hover:bg-white/20 border border-white/10 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={3}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
               Back to Library
             </Link>
+          </div>
 
-            <div className="space-y-6">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em]">
-                {game.genre}
-              </span>
-
-              <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] bg-clip-text text-transparent bg-linear-to-r from-indigo-700 to-purple-700">
-                {game.title}
-              </h1>
-
-              <p className="text-slate-400 text-lg leading-relaxed max-w-md font-medium">
-                Step into the universe of{" "}
-                <span className="text-white">{game.title}</span>. Experience
-                top-tier {game.genre} gameplay with stunning visuals.
+          <div className="space-y-5 ">
+            <h2 className="text-5xl font-black w-full tracking-tight bg-clip-text text-transparent bg-linear-to-r from-indigo-700 to-purple-600  ">
+              {game.title}
+            </h2>
+            <p className="text-zinc-400 text-sm leading-relaxed max-w-md -">
+              {game.short_description}
+            </p>
+          </div>
+          <hr className="border-gray-600 " />
+          <div className="grid grid-cols-2 ">
+            <div>
+              <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">
+                Rating
               </p>
-
-              <div className="flex gap-8 py-8 border-y border-white/5">
-                <div>
-                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">
-                    Rating
-                  </p>
-                  <p className="text-xl font-bold text-yellow-500">4.8 / 5</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">
-                    Platform
-                  </p>
-                  <p className="text-xl font-bold text-slate-200">PC / Web</p>
-                </div>
-              </div>
+              <p className="text-white text-2xl font-black italic">4.8 / 5.0</p>
+            </div>
+            <div>
+              <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                Platform
+              </p>
+              <p className="text-2xl font-black text-white">{game.platform}</p>
             </div>
           </div>
 
-          {/* PLAY NOW Button */}
-          <div className="mt-12">
+          <div className="pt-2">
             <a
               href={game.game_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative inline-flex items-center justify-center px-12 py-5 bg-indigo-600 hover:bg-indigo-600 text-white font-black text-sm uppercase tracking-widest rounded-full shadow-[0_15px_30px_-5px_rgba(79,70,229,0.5)] transition-all duration-300 hover:-translate-y-1 active:scale-95 overflow-hidden"
+              className="
+      group relative inline-flex items-center justify-center w-full md:w-auto 
+      px-12 py-5 overflow-hidden rounded-full
+      font-black uppercase text-sm tracking-[0.2em] text-white
+      transition-all duration-500 ease-out
+      
+      /* Base Gradient Background */
+      bg-linear-to-br from-indigo-700 via-indigo-600 to-purple-600
+      
+      /* Subtle border */ border-white/20
+      
+      /* Neon Shadow */
+      shadow-[0_0_15px_rgba(79,70,229,0.3)]
+      
+      /* HOVER EFFECTS */
+      hover:scale-105
+      hover:shadow-[0_0_35px_rgba(147,51,234,0.6)]
+      hover:border-white/50
+      active:scale-95
+    "
             >
-              <span className="relative z-10 flex items-center gap-2">
+              {/* 1. Animated Shimmer Effect (Button ke andar se light guzregi) */}
+              <span className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] transition-transform"></span>
+
+              {/* 2. Background Glow on Hover */}
+              <span className="absolute inset-0 bg-linear-to-tr from-indigo-600 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+
+              {/* Text Layer */}
+              <span className="relative z-10 flex items-center gap-2 text-sm h-4 w-full justify-center">
                 Play Game
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 group-hover:translate-x-1 transition-transform"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
                   <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                    clipRule="evenodd"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="3"
+                    d="M13 5l7 7-7 7M5 5l7 7-7 7"
                   />
                 </svg>
               </span>
             </a>
           </div>
         </div>
+      </div>
+      <div className="relative z-100 mt-10 max-w-2xl text-center">
+        <p className="text-zinc-500 italic text-lg border-b border-b-gray-600 pb-4">
+          "A cross-platform {game.genre} developed by {game.developer} and
+          Published by {game.publisher}"
+        </p>
       </div>
     </div>
   );
