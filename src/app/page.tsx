@@ -37,7 +37,7 @@ export default function AllGamesPage() {
     return matchGenre && matchSearch && matchPlatform;
   });
 
-  const [sortedRelevance, setSortedRelevance] = useState("id");
+  const [sortedRelevance, setSortedRelevance] = useState("");
 
   const sortedGames = [...filteredGames].sort((a, b) => {
     if (sortedRelevance === "id") {
@@ -45,16 +45,16 @@ export default function AllGamesPage() {
     }
 
     if (sortedRelevance === "name") {
-      return a.title.localeCompare(b.title); // name sort
+      return a.title.localeCompare(b.title);
     }
     return 0;
   });
 
   return (
-    <div className="max-w-full flex flex-row mb-12 h-screen overflow-hidden bg-linear-to-br from-[#120c1d] via-[#07173d] to-[#110e32] text-slate-100">
+    <div className="max-w-full flex flex-row h-screen overflow-hidden bg-linear-to-br from-[#120c1d] via-[#07173d] to-[#110e32] text-slate-100">
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-1/3 left-0 -translate-y-1/2 z-50 lg:hidden bg-linear-to-b from-indigo-500 to-purple-600 text-white px-0 py-7 rounded-r-2xl shadow-[5px_0_20px_rgba(99,102,241,0.4)] border-y border-r border-white/20 transition-all duration-300 hover:px-2 hover:shadow-[5px_0_25px_rgba(168,85,247,0.5)] active:scale-90"
+        className="fixed top-1/3 left-0-translate-y-1/2 z-50 lg:hidden bg-linear-to-b from-indigo-500 to-purple-600 text-white px-0 py-7 rounded-r-xl shadow-[5px_0_20px_rgba(99,102,241,0.4)] border-y border-r border-white/20 transition-all duration-300 hover:px-2 hover:shadow-[5px_0_25px_rgba(168,85,247,0.5)] active:scale-90"
       >
         {sidebarOpen ? "❮" : "❯"}
       </button>
@@ -67,11 +67,9 @@ export default function AllGamesPage() {
       )}
 
       <aside
-        className={`fixed top-0 left-0 h-screen w-56 bg-[#0b0f2a] border-r border-white/5 
-          transform transition-transform duration-300 
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-          lg:static lg:translate-x-0 z-40 overflow-y-auto 
-          [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]`}
+        className={`fixed top-0 left-0 h-screen w-56 bg-[#0b0f2a] border-r border-white/5 z-50 transform transition-transform duration-300 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:static lg:translate-x-0 z-40 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]`}
       >
         <p className="font-extrabold text-3xl p-6 bg-clip-text text-transparent bg-linear-to-r from-blue-600 via-purple-600 to-purple-500">
           Genres
@@ -117,21 +115,12 @@ export default function AllGamesPage() {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col h-screen overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-3 lg:p-3 mt-5">
+      <div className="flex-1 flex flex-col h-screen overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-3 lg:p-3">
         {/* HEADER SECTION */}
-        <div className="flex flex-col gap-7 mb-8">
+        <div className="flex flex-col gap-7 mb-5">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-3 ">
-              <div
-                className="
-  w-14 md:w-14
-  aspect-square
-  rounded-3xl
-  bg-linear-to-br from-indigo-500 to-purple-600
-  flex items-center justify-center
-  shadow-[0_0_20px_rgba(99,102,241,0.4)]
-"
-              >
+              <div className="w-13 md:w-14 aspect-square rounded-3xl bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.4)">
                 <img
                   src="https://media.craiyon.com/2025-04-08/-oTYTlfWQqiyASOnYVxH4g.webp"
                   alt=""
@@ -148,8 +137,8 @@ export default function AllGamesPage() {
                 </p>
               </div>
             </div>
-            <div className="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 px-5 py-2 rounded-full backdrop-blur-md">
-              <span className="text-purple-400 font-bold text-xl">
+            <div className="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 px-6 p-2 rounded-full backdrop-blur-md mr-10">
+              <span className="text-purple-400 font-bold text-lg">
                 {filteredGames.length}
               </span>
               <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">
@@ -159,47 +148,55 @@ export default function AllGamesPage() {
           </div>
         </div>
         {/* Search Bar and select optoins */}
-        <div className="flex flex-col sm:flex-row gap-5 sm:gap-8 mb-10 sticky top-0 z-50 bg-transparent ">
-          <div className="left-5 w-full flex items-center backdrop-blur-md  ">
+        <div
+          className="flex flex-col sm:flex-row sm:gap-3 mb-6 sticky -top-3 z-50 
+bg-linear-to-br from-[#181027] via-[#07173d] to-[#110e32]
+shadow-[0_10px_20px_rgba(25,16,45,2)]"
+        >
+          <div className="left-5 w-full rounded-full flex items-center backdrop-blur-md   ">
             <input
               type="text"
               placeholder="Search for games..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full h-10 rounded-full text-sm text-gray-300 placeholder-slate-400 px-5 py-2  backdrop-blur-md focus:outline-none border-2 border-gray-600 hover:border-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 transition-all duration-300"
+              className="w-full h-10 rounded-full text-[14px] text-gray-300 placeholder-slate-400 px-5 py-2 bg-white/5 backdrop-blur-md border-2 border-white/10 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300 hover:border-indigo-400/50 hover:bg-white/10 hover:shadow-[0_0_25px_rgba(129,140,248,0.4)] hover:scale-[1.02] hover:shadow-indigo-500/20
+"
             />
           </div>
-
-          <div className="  flex felx-row  gap-3 sm:gap-3">
+          <div className="flex felx-col gap-3 sm:gap-3 mt-3 sm:mt-0 ">
             <select
-              className="w-50 h-10 rounded-full text-sm text-gray-400 placeholder-slate-400 px-3 py-2 backdrop-blur-md focus:outline-none border-2 border-gray-600 hover:border-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 transition-all duration-300"
+              className="w-50 h-10 rounded-full text-sm text-gray-400 placeholder-slate-400 px-3 py-2 bg-white/5 backdrop-blur-md border-2 border-white/10 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300 hover:border-indigo-400/50 hover:bg-white/10 hover:shadow-[0_0_25px_rgba(129,140,248,0.4)] hover:scale-[1.02] hover:shadow-indigo-500/20"
               value={sortedRelevance}
               onChange={(e) => setSortedRelevance(e.target.value)}
             >
-              <option className=" bg-black text-white " value="all">
+              <option className=" bg-blue-950 text-gray-400 " value="all">
                 Sorted Games
               </option>
-              <option className="bg-black text-white" value="id">
+              <option className="bg-blue-950 text-gray-400" value="id">
                 ID
               </option>
-              <option className="bg-black text-white " value="name">
+              <option className="bg-blue-950 text-gray-400" value="name">
                 Name
               </option>
             </select>
 
             <select
-              className="w-50 h-10 rounded-full text-sm text-gray-400 placeholder-slate-400 px-3 py-2  bg-transparent backdrop-blur-md focus:outline-none border-2 border-gray-600 hover:border-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 transition-all duration-300"
+              className="w-50 h-10 rounded-full text-sm text-gray-400 placeholder-slate-400 px-3 py-2 bg-white/5 backdrop-blur-md border-2 border-white/10 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300 hover:border-indigo-400/50 hover:bg-white/10 hover:shadow-[0_0_25px_rgba(129,140,248,0.4)] hover:scale-[1.02] hover:shadow-indigo-500/20"
               onChange={(e) => {
                 setSelectedPlatforms(e.target.value);
               }}
             >
               {" "}
-              <option className="bg-black text-white" value="all">
+              <option className="bg-blue-950 text-white" value="all">
                 All Platforms
               </option>
               {platforms.map((item) => {
                 return (
-                  <option className="bg-black text-white" value={item.id}>
+                  <option
+                    key={item.id}
+                    className="bg-blue-950 text-white"
+                    value={item.id}
+                  >
                     {item.name}
                   </option>
                 );
@@ -208,7 +205,7 @@ export default function AllGamesPage() {
           </div>
         </div>
         {/*CARDS GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 ">
           {sortedGames.map((game) => (
             <Link key={game.id} href={`/games/${game.id}`}>
               <div className="group relative rounded-2xl overflow-hidden bg-transparent backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-2 border-2 border-white/20 hover:border-blue-500 shadow-lg ring-1 ring-white/10 hover:ring-2 hover:ring-blue-900/60 hover:shadow-[0_0_25px_rgba(59,130,246,0.6)]">

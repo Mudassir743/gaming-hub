@@ -45,7 +45,7 @@ export default async function GamePage({
           </div>
 
           <div className="space-y-5 ">
-            <h2 className="text-5xl font-black w-full tracking-tight bg-clip-text text-transparent bg-linear-to-r from-indigo-700 to-purple-600  ">
+            <h2 className="  text-3xl md:text-4xl font-black w-full tracking-tight bg-clip-text text-transparent bg-linear-to-r from-indigo-700 to-purple-600  ">
               {game.title}
             </h2>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-md -">
@@ -58,13 +58,17 @@ export default async function GamePage({
               <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">
                 Rating
               </p>
-              <p className="text-white text-2xl font-black italic">4.8 / 5.0</p>
+              <p className="text-white text-[20px] font-black italic">
+                4.8 / 5.0
+              </p>
             </div>
             <div>
               <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
                 Platform
               </p>
-              <p className="text-2xl font-black text-white">{game.platform}</p>
+              <p className=" text-[20px] font-black text-white">
+                {game.platform}
+              </p>
             </div>
           </div>
 
