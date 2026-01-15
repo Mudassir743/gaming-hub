@@ -132,7 +132,7 @@ export default function AllGamesPage() {
                 <h1 className="text-[25px] md:text-[45px] font-extrabold bg-clip-text text-transparent bg-linear-to-r from-blue-600 via-purple-600 to-purple-500 leading-tight">
                   Discovery Library
                 </h1>
-                <p className="text-purple-500 text-sm md:text-sm font-medium tracking-wide">
+                <p className="text-purple-100 text-sm md:text-sm font-medium tracking-wide">
                   Find your next adventure
                 </p>
               </div>
