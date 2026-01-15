@@ -71,7 +71,7 @@ export default function AllGamesPage() {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:static lg:translate-x-0 z-40 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]`}
       >
-        <p className="font-extrabold text-3xl mt-10 p-6 bg-clip-text text-transparent bg-linear-to-r from-blue-700 via-fuchsia-700 to-purple-500">
+        <p className="font-extrabold text-3xl mt-5 p-6 bg-clip-text text-transparent bg-linear-to-r from-blue-700 via-fuchsia-700 to-purple-500">
           Genres
         </p>
         <div className="grid grid-cols-1 gap-5 px-4">
@@ -119,7 +119,7 @@ export default function AllGamesPage() {
         {/* HEADER SECTION */}
         <div className="flex flex-col gap-7 mb-5">
           <div className="flex items-center justify-between w-full">
-            <div className="flex items-center gap-3 ">
+            <div className="flex items-center gap-2 ">
               <div className="w-13 md:w-14 aspect-square rounded-3xl bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.4)">
                 <img
                   src="https://media.craiyon.com/2025-04-08/-oTYTlfWQqiyASOnYVxH4g.webp"
@@ -132,7 +132,7 @@ export default function AllGamesPage() {
                 <h1 className="text-[25px] md:text-[45px] font-extrabold bg-clip-text text-transparent bg-linear-to-r from-blue-600 via-purple-600 to-purple-500 leading-tight">
                   Discovery Library
                 </h1>
-                <p className="text-purple-100 text-sm md:text-sm font-medium tracking-wide">
+                <p className="text-purple-400 text-[13px] md:text-sm px-1 font-medium tracking-wide">
                   Find your next adventure
                 </p>
               </div>
