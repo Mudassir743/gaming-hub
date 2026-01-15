@@ -51,10 +51,10 @@ export default function AllGamesPage() {
   });
 
   return (
-    <div className="max-w-full flex flex-row h-screen overflow-hidden bg-linear-to-br from-[#120c1d] via-[#07173d] to-[#110e32] text-slate-100">
+    <div className="max-w-full flex flex-row h-screen overflow-hidden bg-linear-to-br from-[#120c1d] via-[#07173d] to-[#110e32] text-slate-100 scroll-behavior: smooth;">
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-1/3 left-0-translate-y-1/2 z-50 lg:hidden bg-linear-to-b from-indigo-500 to-purple-600 text-white px-0 py-7 rounded-r-xl shadow-[5px_0_20px_rgba(99,102,241,0.4)] border-y border-r border-white/20 transition-all duration-300 hover:px-2 hover:shadow-[5px_0_25px_rgba(168,85,247,0.5)] active:scale-90"
+        className="fixed top-1/3 left-0-translate-y-1/2 z-50 lg:hidden bg-linear-to-b from-indigo-500 to-purple-600 text-white px-1 py-7 rounded-r-xl shadow-[5px_0_20px_rgba(99,102,241,0.4)] border-y border-r border-white/20 transition-all duration-300 hover:px-2 hover:shadow-[5px_0_25px_rgba(168,85,247,0.5)] active:scale-90"
       >
         {sidebarOpen ? "❮" : "❯"}
       </button>
@@ -71,7 +71,7 @@ export default function AllGamesPage() {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:static lg:translate-x-0 z-40 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]`}
       >
-        <p className="font-extrabold text-3xl p-6 bg-clip-text text-transparent bg-linear-to-r from-blue-600 via-purple-600 to-purple-500">
+        <p className="font-extrabold text-3xl mt-10 p-6 bg-clip-text text-transparent bg-linear-to-r from-blue-700 via-fuchsia-700 to-purple-500">
           Genres
         </p>
         <div className="grid grid-cols-1 gap-5 px-4">
@@ -129,10 +129,10 @@ export default function AllGamesPage() {
               </div>
 
               <div className="flex flex-col">
-                <h1 className="text-2xl md:text-[45px] font-extrabold bg-clip-text text-transparent bg-linear-to-r from-blue-600 via-purple-600 to-purple-500 leading-tight">
+                <h1 className="text-[25px] md:text-[45px] font-extrabold bg-clip-text text-transparent bg-linear-to-r from-blue-600 via-purple-600 to-purple-500 leading-tight">
                   Discovery Library
                 </h1>
-                <p className="text-slate-400 text-sm font-medium tracking-wide">
+                <p className="text-purple-500 text-sm md:text-sm font-medium tracking-wide">
                   Find your next adventure
                 </p>
               </div>
@@ -148,11 +148,7 @@ export default function AllGamesPage() {
           </div>
         </div>
         {/* Search Bar and select optoins */}
-        <div
-          className="flex flex-col sm:flex-row sm:gap-3 mb-6 sticky -top-3 z-50 
-bg-linear-to-br from-[#181027] via-[#07173d] to-[#110e32]
-shadow-[0_10px_20px_rgba(25,16,45,2)]"
-        >
+        <div className="flex flex-col sm:flex-row sm:gap-3 mb-6 sticky -top-3 z-10 bg-linear-to-br from-[#181027] via-[#07173d] to-[#110e32] shadow-[0_10px_20px_rgba(25,16,45,2)]">
           <div className="left-5 w-full rounded-full flex items-center backdrop-blur-md   ">
             <input
               type="text"
@@ -205,7 +201,7 @@ shadow-[0_10px_20px_rgba(25,16,45,2)]"
           </div>
         </div>
         {/*CARDS GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 scroll-behavior: smooth; ">
           {sortedGames.map((game) => (
             <Link key={game.id} href={`/games/${game.id}`}>
               <div className="group relative rounded-2xl overflow-hidden bg-transparent backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-2 border-2 border-white/20 hover:border-blue-500 shadow-lg ring-1 ring-white/10 hover:ring-2 hover:ring-blue-900/60 hover:shadow-[0_0_25px_rgba(59,130,246,0.6)]">
